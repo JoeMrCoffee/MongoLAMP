@@ -1,6 +1,6 @@
 # MongoLAMP
 
-This is a quick docker-compose script and Dockerfile for getting a LAMP stack with a MongoDB backend installed and running. 
+This is a quick docker-compose script and Dockerfile for getting a LAMP stack with a MongoDB backend installed and running. In this case the 'M' in LAMP is for Mongo.
 
 A very quick test site collecting user input, creating a database, and inserting the values is provided as a reference on how to interact with MongoDB via PHP.
 
@@ -12,6 +12,12 @@ Once modified just run docker-compose up (on Linux sudo privileges are required)
 
 NOTE: If the default login was changed, the php files (i.e. insertnames.php in this example) will also need to adjust the access rights on MongoDB\Client("mongodb://'MongoDB user':'MongoDB pasword'@mongo:27017");
 
+## On start
+
+Once the containers are running, open a browser and just go to the localhost. The simple test page (index.html) should show. Entering a name and age and submit will create a MongoDB database called gettingstarted and insert the user information that was entered. 
+
+To use Mongo-Express it is set to port 8081 by default. From the browser navigate to localhost:8081 and it should come up.
+
 ## Tips and troubleshooting
 
 Composer:<br>
@@ -22,7 +28,9 @@ Forcing the directory to /var/www in the 'composer require --working-dir=/var/ww
 The Dockerfile and reference website code should demonstrate the logic.
 
 Mongo-Express:<br>
-If when first running the docker-compose up command the mongo-express container fails to connect it will close. I've tried to link this and create a dependency to the mongodb container, however, a few times it failed to start. Once the docker-compose up finishes and both the mongodb and Apache PHP containers are running, simply run docker start mongoex (or whatever the name of the conatiner is) to get it working. 
+If when first running the 'docker-compose up' command the mongo-express container fails to connect it will close. I've tried to link this and create a dependency to the mongodb container. However, a few times it failed to connect. I believe this is a timing issue if it starts before the mongodb container is ready. 
+
+Once the docker-compose up finishes and both the mongodb and Apache:PHP containers are running, simply run docker start mongoex (or whatever the name of the conatiner is) to get it working. 
 
 Auto restart the containers:<br>
 The containers can be set to auto restart by using the - restart flag in the docker-compose. Parameters of 'always' or 'unless-stopped' can be added. The official MongoDB images on the docker hub use the 'restart;always' flag, but I personally prefer 'unless-stopped' for slightly easier management in case you need to update an image or perform other maintenance tasks. 
